@@ -50,7 +50,7 @@
 - 放行一些端口或者关闭防火墙
 
   ```bash
-  $ systemclt disable firewalld.service && systemctl stop firewalld.service
+  $ systemctl disable firewalld.service && systemctl stop firewalld.service
   ```
 
 - 关闭 selinux
