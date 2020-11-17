@@ -221,6 +221,49 @@ docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:3.4.13-0 && 
 docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:1.7.0
 ```
 
+1.19.4版本
+
+```bahs
+$ kubeadm config images list --kubernetes-version=v1.19.4
+k8s.gcr.io/kube-apiserver:v1.19.4
+k8s.gcr.io/kube-controller-manager:v1.19.4
+k8s.gcr.io/kube-scheduler:v1.19.4
+k8s.gcr.io/kube-proxy:v1.19.4
+k8s.gcr.io/pause:3.2
+k8s.gcr.io/etcd:3.4.13-0
+k8s.gcr.io/coredns:1.7.0
+
+# 拉取阿里云的google镜像
+docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.19.4 && \
+docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-controller-manager:v1.19.4 && \
+docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler:v1.19.4 && \
+docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-proxy:v1.19.4 && \
+docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.2 && \
+docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:3.4.13-0 && \
+docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:1.7.0
+
+# 重命名镜像
+docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.19.4 k8s.gcr.io/kube-apiserver:v1.19.4 && \
+docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/kube-controller-manager:v1.19.4 k8s.gcr.io/kube-controller-manager:v1.19.4  && \
+docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler:v1.19.4 k8s.gcr.io/kube-scheduler:v1.19.4  && \
+docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/kube-proxy:v1.19.4 k8s.gcr.io/kube-proxy:v1.19.4  && \
+docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.2 k8s.gcr.io/pause:3.2  && \
+docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:3.4.13-0 k8s.gcr.io/etcd:3.4.13-0  && \
+docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:1.7.0 k8s.gcr.io/coredns:1.7.0
+
+# 删除阿里云镜像
+docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.19.4 && \
+docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/kube-controller-manager:v1.19.4 && \
+docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler:v1.19.4 && \
+docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/kube-proxy:v1.19.4 && \
+docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.2 && \
+docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:3.4.13-0 && \
+docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:1.7.0
+
+```
+
+
+
 ## 拉取flannel镜像
 
 ```bash
@@ -353,7 +396,7 @@ kubectl describe pod coredns-f9fd979d6-gv9t9 --namespace=kube-system
 kubectl describe pod coredns-f9fd979d6-wrpjt --namespace=kube-system 
 ```
 
-这里我就是从步骤`拉取flannel`开始重启执行了一遍，运行`kubeadm init`前先执行 `kubeadmin reset`，其他两个node需要重新加入也需要选运行 `kubeadm reset`
+这里我就是从步骤`拉取flannel`开始重启执行了一遍，运行`kubeadm init`前先执行 `kubeadm reset`，其他两个node需要重新加入也需要选运行 `kubeadm reset`
 
 ## 其他教程
 
