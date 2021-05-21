@@ -176,7 +176,7 @@ NAME                        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   
 dashboard-metrics-scraper   ClusterIP   10.97.209.183   <none>        8000/TCP   6m36s
 kubernetes-dashboard        ClusterIP   10.105.44.74    <none>        443/TCP    6m39s
 # 查看 deploment
-$ bectl get deployment -n kubernetes-dashboard
+$ kubectl get deployment -n kubernetes-dashboard
 NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
 dashboard-metrics-scraper   1/1     1            1           8m6s
 kubernetes-dashboard        1/1     1            1           8m7s
@@ -316,7 +316,7 @@ kubectl get pod -o wide
 
 2. 使用kuboard图像化界面创建
 
-3. 使用yaml文件创建
+3. 使用yaml文件创建`my-dep-deployment.yaml`
 
    ```yaml
    apiVersion: apps/v1 # api版本
@@ -344,7 +344,39 @@ kubectl get pod -o wide
 
    保存成`my-dep.yaml` 然后执行 `kubectl apply -f my-dep.yaml`
 
-   命令行查看 deployment 和 pod 是否创建
+   命令行查看 deployment 和 pod 是否创建。
+   
+   可以使用命令暴露上面创建的deployment
+   
+   ```bash
+   kubectl expose deployment myweb --port=80 --type=NodePort
+   ```
+   
+   但是一般使用yaml方式暴露服务`my-dep-service.yaml`
+   
+   ```yaml
+   # 发布 my-dep 服务
+   apiVersion: v1
+   kind: Service
+   metadata:
+     name: my-dep
+     labels: # 和my-dep.yaml 的元数据的 labels 一致（有一个一样即可）
+       app: nginx
+       env: dep
+   spec:
+     selector: # 和my-dep.yaml template 的元数据的 labels 一致（有一个一样即可）
+       app: nginx
+       env: dep
+     ports: # 暴露端口
+       - name: nginx-ports
+         protocol: TCP
+         port: 80 # pod的80端口，service和pod通讯使用的端口
+         nodePort: 30001 # 暴露到物理机端口 范围30000-32767
+         targetPort: 80 # 收到请求发送到pod的80 端口
+     type: NodePort
+   ```
+   
+   运行上面的文件`kubectl apply -f my-dep-service.yaml`
 
 ### 查看k8s对象状态
 
@@ -364,6 +396,31 @@ kubectl get pod -o wide
 
   `kubectl get pod -A -o wide`  多一些显示信息
 
-#### 命令：`kubectl describe 资源类型`
+#### 命令：`kubectl describe 资源名称`
 
 `kubectl describe pod myweb-6d48cc849f-9zsrz`
+
+#### 命令：`kubectl log ...` 查看pod的容器的运行日志
+
+`kubectl log myweb-6d48cc849f-9zsrz`
+
+#### 命令：`kubectl exex -it pod名 /bin/bash` 进去pod中容器
+
+`kubectl exec -it my-dep-666f657975-8bdb6 /bin/bash`
+
+### 服务伸缩 Scale
+
+```bash
+kubectl scale -n default deployment my-dep --replicas=4
+```
+
+### 干跑模式
+
+不正真执行命令，只是测试下命令是否可以执行
+
+```bash
+kubectl create deployment nginx-test --image=nginx:latest --dry-run=client
+kubectl create deployment nginx-test --image=nginx:latest --dry-run=client -o yaml # -o 输出成yaml到命令行
+kubectl create deployment nginx-test --image=nginx:latest --dry-run=client -o yaml>nginx.test.yaml  #yaml保存到文件中
+```
+

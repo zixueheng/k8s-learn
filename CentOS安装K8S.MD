@@ -65,6 +65,10 @@
 192.168.19.98 centos7-1
 192.168.19.101 centos7-2
 192.168.19.80 centos7-3
+
+192.168.175.128 VM1
+192.168.175.130 VM2
+192.168.175.131 VM3
 ```
 
   
@@ -221,54 +225,55 @@ docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:3.4.13-0 && 
 docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:1.7.0
 ```
 
-1.19.4版本
+1.21.1版本
 
 ```bahs
-$ kubeadm config images list --kubernetes-version=v1.19.4
-k8s.gcr.io/kube-apiserver:v1.19.4
-k8s.gcr.io/kube-controller-manager:v1.19.4
-k8s.gcr.io/kube-scheduler:v1.19.4
-k8s.gcr.io/kube-proxy:v1.19.4
-k8s.gcr.io/pause:3.2
+$ kubeadm config images list --kubernetes-version=v1.21.1
+k8s.gcr.io/kube-apiserver:v1.21.1
+k8s.gcr.io/kube-controller-manager:v1.21.1
+k8s.gcr.io/kube-scheduler:v1.21.1
+k8s.gcr.io/kube-proxy:v1.21.1
+k8s.gcr.io/pause:3.4.1
 k8s.gcr.io/etcd:3.4.13-0
-k8s.gcr.io/coredns:1.7.0
+k8s.gcr.io/coredns/coredns:v1.8.0
 
 # 拉取阿里云的google镜像
-docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.19.4 && \
-docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-controller-manager:v1.19.4 && \
-docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler:v1.19.4 && \
-docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-proxy:v1.19.4 && \
-docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.2 && \
-docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:3.4.13-0 && \
-docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:1.7.0
+docker pull registry.aliyuncs.com/k8sxio/kube-apiserver:v1.21.1 && \
+docker pull registry.aliyuncs.com/k8sxio/kube-controller-manager:v1.21.1 && \
+docker pull registry.aliyuncs.com/k8sxio/kube-scheduler:v1.21.1 && \
+docker pull registry.aliyuncs.com/k8sxio/kube-proxy:v1.21.1 && \
+docker pull registry.aliyuncs.com/k8sxio/pause:3.4.1 && \
+docker pull registry.aliyuncs.com/k8sxio/etcd:3.4.13-0 && \
+docker pull swr.cn-east-2.myhuaweicloud.com/coredns/coredns:1.8.0
 
 # 重命名镜像
-docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.19.4 k8s.gcr.io/kube-apiserver:v1.19.4 && \
-docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/kube-controller-manager:v1.19.4 k8s.gcr.io/kube-controller-manager:v1.19.4  && \
-docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler:v1.19.4 k8s.gcr.io/kube-scheduler:v1.19.4  && \
-docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/kube-proxy:v1.19.4 k8s.gcr.io/kube-proxy:v1.19.4  && \
-docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.2 k8s.gcr.io/pause:3.2  && \
-docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:3.4.13-0 k8s.gcr.io/etcd:3.4.13-0  && \
-docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:1.7.0 k8s.gcr.io/coredns:1.7.0
+docker tag registry.aliyuncs.com/k8sxio/kube-apiserver:v1.21.1 k8s.gcr.io/kube-apiserver:v1.21.1 && \
+docker tag registry.aliyuncs.com/k8sxio/kube-controller-manager:v1.21.1 k8s.gcr.io/kube-controller-manager:v1.21.1  && \
+docker tag registry.aliyuncs.com/k8sxio/kube-scheduler:v1.21.1 k8s.gcr.io/kube-scheduler:v1.21.1  && \
+docker tag registry.aliyuncs.com/k8sxio/kube-proxy:v1.21.1 k8s.gcr.io/kube-proxy:v1.21.1  && \
+docker tag registry.aliyuncs.com/k8sxio/pause:3.4.1 k8s.gcr.io/pause:3.4.1  && \
+docker tag registry.aliyuncs.com/k8sxio/etcd:3.4.13-0 k8s.gcr.io/etcd:3.4.13-0  && \
+docker tag swr.cn-east-2.myhuaweicloud.com/coredns/coredns:1.8.0 k8s.gcr.io/coredns/coredns:v1.8.0
 
 # 删除阿里云镜像
-docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.19.4 && \
-docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/kube-controller-manager:v1.19.4 && \
-docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler:v1.19.4 && \
-docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/kube-proxy:v1.19.4 && \
-docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.2 && \
-docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:3.4.13-0 && \
-docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:1.7.0
+docker rmi registry.aliyuncs.com/k8sxio/kube-apiserver:v1.21.1 && \
+docker rmi registry.aliyuncs.com/k8sxio/kube-controller-manager:v1.21.1 && \
+docker rmi registry.aliyuncs.com/k8sxio/kube-scheduler:v1.21.1 && \
+docker rmi registry.aliyuncs.com/k8sxio/kube-proxy:v1.21.1 && \
+docker rmi registry.aliyuncs.com/k8sxio/pause:3.4.1 && \
+docker rmi registry.aliyuncs.com/k8sxio/etcd:3.4.13-0 && \
+docker rmi swr.cn-east-2.myhuaweicloud.com/coredns/coredns:1.8.0
 
 ```
 
 
 
-## 拉取flannel镜像
+## 拉取flannel镜像（这步不要做）
 
 ```bash
 # https://quay.io/repository/coreos/flannel?tab=tags
 docker pull quay.io/coreos/flannel:v0.13.0-arm64
+docker pull quay.io/coreos/flannel:v0.14.0-rc1-arm64
 
 # 配置
 mkdir -p /etc/cni/net.d
@@ -293,7 +298,7 @@ systemctl restart docker.service
 ## Master主机初始化kubeadm
 
 ```bash
-kubeadm init --apiserver-advertise-address 192.168.19.98 --pod-network-cidr=10.244.0.0/16
+kubeadm init --apiserver-advertise-address=192.168.175.128 --pod-network-cidr=10.244.0.0/16 --kubernetes-version=v1.21.1 --ignore-preflight-errors=Swap
 
 # 成功后，要使用集群要按照提示运行下面命令
 mkdir -p $HOME/.kube && \
@@ -309,9 +314,54 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 ```
 
+journalctl -f -u kubelet 查看日志发现，报错如下：
+
+kubelet cgroup driver: “cgroupfs” is different from docker cgroup driver: “systemd”
+
+这个里要修改3个配置文件为systemd
+1.vim /etc/docker/daemon.json
+
+“exec-opts”: [“native.cgroupdriver=systemd”]
+2.
+
+```bash
+vim /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+```
+
+在KUBELET_KUBECONFIG_ARGS 后面追加 --cgroup-driver=systemd
+
+Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --cgroup-driver=systemd"
+
+```
+# Note: This dropin only works with kubeadm and kubelet v1.11+
+[Service]
+Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --cgroup-driver=systemd"
+Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"
+# This is a file that "kubeadm init" and "kubeadm join" generates at runtime, populating the KUBELET_KUBEADM_ARGS variable dynamically
+EnvironmentFile=-/var/lib/kubelet/kubeadm-flags.env
+
+# This is a file that the user can use for overrides of the kubelet args as a last resort. Preferably, the user should use
+# the .NodeRegistration.KubeletExtraArgs object in the configuration files instead. KUBELET_EXTRA_ARGS should be sourced from this file.
+EnvironmentFile=-/etc/sysconfig/kubelet
+ExecStart=
+ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS
+
+```
+
+
+
+3.vim /var/lib/kubelet/kubeadm-flags.env
+
+KUBELET_KUBEADM_ARGS="--cgroup-driver=systemd --network-plugin=cni --pod-infra-container-image=registry.aliyuncs.com/google_containers/pause:3.2"
+
+systemctl daemon-reload
+systemctl restart kubelet
+
 ## 两台Node主机加入Master
 
 ```bash
+# 可执行 `kubeadm token create --print-join-command` 获取node节点加入master的命令
+
 # 按提示在另外两台主机运行
 kubeadm join 192.168.19.98:6443 --token me8pf2.e88l7mvwaty517kr \
     --discovery-token-ca-cert-hash sha256:d8a2926d6ee7ee5c17e1790bd807ca3a6217f08472a5e54b4d0b65accd51094c
@@ -397,6 +447,23 @@ kubectl describe pod coredns-f9fd979d6-wrpjt --namespace=kube-system
 ```
 
 这里我就是从步骤`拉取flannel`开始重启执行了一遍，运行`kubeadm init`前先执行 `kubeadm reset`，其他两个node需要重新加入也需要选运行 `kubeadm reset`
+
+如果出现 `failed to set bridge addr: "cni0" already has an IP address different from 10.244.0.1/24` 类似的错误，可能是 cni0的网卡配置（`ifconfig`查看）和报错提示的ip不一致导致，可将这个错误的网卡删掉，它会自己重建：
+
+```ba
+ifconfig cni0 down    
+ip link delete cni0
+```
+
+
+
+```bash
+# 可能跟fannel网络有关的配置删除
+rm -rf /etc/cni/net.d/
+rm -rf /var/lib/cni/
+```
+
+
 
 ## 其他教程
 
