@@ -370,9 +370,9 @@ kubectl get pod -o wide
      ports: # 暴露端口
        - name: nginx-ports
          protocol: TCP
-         port: 80 # pod的80端口，service和pod通讯使用的端口
+         port: 80 # service的80端口，service和pod通讯使用的端口
          nodePort: 30001 # 暴露到物理机端口 范围30000-32767
-         targetPort: 80 # 收到请求发送到pod的80 端口
+         targetPort: 80 # pod的80端口，收到请求发送到pod的80 端口
      type: NodePort
    ```
    
